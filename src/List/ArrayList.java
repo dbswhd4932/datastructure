@@ -10,7 +10,6 @@ public class ArrayList<E> implements List<E> {
     private static final Object[] EMPTY_ARRAY = {};	// 빈 배열
 
     private int size;	// 요소 개수
-
     Object[] array;	// 요소를 담을 배열
 
     // 생성자1 (초기 공간 할당 X)
@@ -30,13 +29,13 @@ public class ArrayList<E> implements List<E> {
     private void resize() {
         int array_capacity = array.length;
 
-        // if array's capacity is 0
+        // 배열의 용량이 0일 때
         if (Arrays.equals(array, EMPTY_ARRAY)) {
             array = new Object[DEFAULT_CAPACITY];
             return;
         }
 
-        // 용량이 꽉 찰 경우
+        // 용량이 꽉 찰 경우 2배로 늘린다.
         if (size == array_capacity) {
             int new_capacity = array_capacity * 2;
 
@@ -44,7 +43,7 @@ public class ArrayList<E> implements List<E> {
             array = Arrays.copyOf(array, new_capacity);
             return;
         }
-        // 용적의 절반 미만으로 요소가 차지하고 있을 경우
+        // 용적의 절반 미만으로 요소가 차지하고 있을 경우 반절로 변경
         if (size < (array_capacity / 2)) {
             int new_capacity = array_capacity / 2;
 
@@ -66,23 +65,29 @@ public class ArrayList<E> implements List<E> {
         if (size == array.length) {
             resize();
         }
-        array[size] = value;	// 마지막 위치에 요소 추가
-        size++;	// 사이즈 1 증가
+
+        // 마지막 위치에 요소 추가
+        array[size] = value;
+        // 사이즈 1 증가
+        size++;
     }
 
 
     @Override
     public void add(int index, E value) {
 
-        if (index > size || index < 0) {	// 영역을 벗어날 경우 예외 발생
+        // 영역을 벗어날 경우 예외 발생
+        if (index > size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
-        if (index == size) {	// index가 마지막 위치라면 addLast 메소드로 요소추가
-            addLast(value);
-        }
-        else {
 
-            if(size == array.length) {	// 꽉차있다면 용적 재할당
+        // index가 마지막 위치라면 addLast 메소드로 요소추가
+        if (index == size) {
+            addLast(value);
+        } else {
+
+            // 꽉차있다면 용적 재할당
+            if(size == array.length) {
                 resize();
             }
 
@@ -91,22 +96,27 @@ public class ArrayList<E> implements List<E> {
                 array[i] = array[i - 1];
             }
 
-            array[index] = value;	// index 위치에 요소 할당
+            // index 위치에 요소 할당
+            array[index] = value;
             size++;
         }
     }
 
     public void addFirst(E value) {
+        // 메서드 재활용, 가장 첫번째 넣고, 나머지 한칸씩 뒤로 미룬다.
         add(0, value);
     }
 
 
+    //ClassCastException이 뜨지 않으니 이 경고들을 무시
     @SuppressWarnings("unchecked")
     @Override
     public E get(int index) {
-        if(index >= size || index < 0) {	// 범위 벗어나면 예외 발생
+        // 범위 벗어나면 예외 발생
+        if(index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
+
         // Object 타입에서 E타입으로 캐스팅 후 반환
         return (E) array[index];
     }
@@ -114,10 +124,10 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void set(int index, E value) {
-        if (index >= size || index < 0) {	// 범위를 벗어날 경우 예외 발생
+        // 범위를 벗어날 경우 예외 발생
+        if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
-        }
-        else {
+        } else {
             // 해당 위치의 요소를 교체
             array[index] = value;
         }
@@ -155,8 +165,7 @@ public class ArrayList<E> implements List<E> {
         // 0 이상이면 요소가 존재한다는 뜻
         if(indexOf(value) >= 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -203,12 +212,14 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int size() {
-        return size;	// 요소 개수 반환
+        // 요소 개수 반환
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;	// 요소가 0개일 경우 비어있다는 의미이므로 true반환
+        // 요소가 0개일 경우 비어있다는 의미이므로 true반환
+        return size == 0;
     }
 
     @Override
@@ -221,36 +232,4 @@ public class ArrayList<E> implements List<E> {
         resize();
     }
 
-
-    // 부록 메소드
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-
-        // 새로운 객체 생성
-        ArrayList<?> cloneList = (ArrayList<?>)super.clone();
-
-        // 새로운 객체의 배열도 생성해주어야 함 (객체는 얕은복사가 되기 때문)
-        cloneList.array = new Object[size];
-
-        // 배열의 값을 복사함
-        System.arraycopy(array, 0, cloneList.array, 0, size);
-
-        return cloneList;
-    }
-
-    public Object[] toArray() {
-        return Arrays.copyOf(array, size);
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public <T> T[] toArray(T[] a) {
-        if (a.length < size) {
-            // copyOf(원본 배열, 복사할 길이, Class<? extends T[]> 타입)
-            return (T[]) Arrays.copyOf(array, size, a.getClass());
-        }
-        // 원본배열, 원본배열 시작위치, 복사할 배열, 복사할배열 시작위치, 복사할 요소 수
-        System.arraycopy(array, 0, a, 0, size);
-        return a;
-    }
 }
