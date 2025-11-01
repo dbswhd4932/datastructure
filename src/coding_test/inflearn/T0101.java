@@ -4,22 +4,25 @@ import java.util.Scanner;
 
 public class T0101 {
 
-    public static void main(String[] args) {
-
+    public int solution(String str, char t) {
         int answer = 0;
 
-        Scanner in = new Scanner(System.in);
-        String input1 = in.nextLine();
-        String input2 = in.nextLine();
+        str = str.toUpperCase();
+        t = Character.toUpperCase(t);
 
-        String input1UpperCase = input1.toUpperCase();
-        String input2UpperCase = input2.toUpperCase();
-
-        for (String s : input1UpperCase.split("")) {
-            if(s.equals(input2UpperCase)) {
-              answer++;
+        for (char c : str.toCharArray()) {
+            if (t == c) {
+                answer++;
             }
         }
-        System.out.println(answer);
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        T0101 T = new T0101();
+        Scanner kb = new Scanner(System.in);
+        String str = kb.next();
+        char c = kb.next().charAt(0);
+        System.out.println(T.solution(str, c));
     }
 }
