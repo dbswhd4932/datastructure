@@ -2,28 +2,31 @@ package coding_test.inflearn;
 
 import java.util.LinkedHashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class T0106_2 {
+
+    public String solution(String str) {
+        LinkedHashSet<Character> set = new LinkedHashSet<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] charArray = str.toCharArray();
+        for (char c : charArray) {
+            set.add(c);
+        }
+
+        for (Character c : set) {
+            stringBuilder.append(c);
+        }
+
+        return stringBuilder.toString();
+    }
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String input = in.nextLine();
 
-        char[] charArray = input.toCharArray();
+        T0106_2 t = new T0106_2();
+        System.out.println(t.solution(input));
 
-        Set<Character> charSet = new LinkedHashSet<>();
-
-        for (char c : charArray) {
-            charSet.add(c);
-        }
-
-        StringBuilder result = new StringBuilder();
-        for (Character c : charSet) {
-            result.append(c);
-        }
-
-        System.out.println(result);
     }
 
 }
