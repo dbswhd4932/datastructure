@@ -4,13 +4,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-class Point {
+class Point_T0812 {
 
     int x;
     int y;
 
-    public Point(int x,
-                 int y) {
+    public Point_T0812(int x,
+                       int y) {
         this.x = x;
         this.y = y;
     }
@@ -23,13 +23,13 @@ public class T0812 {
     static int[][] box, day;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static Queue<Point> q = new LinkedList<>();
+    static Queue<Point_T0812> q = new LinkedList<>();
     static int maxDay = 0;
 
     public int solution() {
         // BFS 시작
         while (!q.isEmpty()) {
-            Point current = q.poll();
+            Point_T0812 current = q.poll();
             // 상,하,좌,우 체크
             for (int i = 0; i < 4; i++) {
                 int nx = current.x + dx[i];
@@ -42,7 +42,7 @@ public class T0812 {
                     // 날짜 기록
                     day[ny][nx] = day[current.y][current.x] + 1;
                     // 큐에 담기
-                    q.offer(new Point(nx, ny));
+                    q.offer(new Point_T0812(nx, ny));
                 }
             }
         }
@@ -78,7 +78,7 @@ public class T0812 {
                 box[i][j] = sc.nextInt();
 
                 if (box[i][j] == 1) {
-                    q.offer(new Point(j, i));
+                    q.offer(new Point_T0812(j, i));
                 } else if (box[i][j] == 0) {
                     unripeCount++;
                 }
